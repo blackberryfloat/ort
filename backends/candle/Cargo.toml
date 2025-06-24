@@ -36,7 +36,7 @@ ort-sys = { version = "=2.0.0-rc.10", path = "../../ort-sys", default-features =
 [dependencies]
 ort-sys = { workspace = true }
 candle-core = { git = "https://github.com/KimHenrikOtte/candle.git", branch = "wgpu_cleanup", default-features = false, features = [ "wgpu" ] }
-candle-onnx = { git = "https://github.com/KimHenrikOtte/candle.git", branch = "wgpu_cleanup", feature = ["wgpu"] }
+candle-onnx = { git = "https://github.com/KimHenrikOtte/candle.git", branch = "wgpu_cleanup", features = ["wgpu"] }
 prost = { version = "0.12.1", default-features = false }
 
 [dev-dependencies]
