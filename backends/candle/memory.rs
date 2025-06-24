@@ -21,6 +21,9 @@ impl MemoryInfo {
 			"Metal" => Device::new_metal(device_id)
 				.map(Self)
 				.map_err(|e| Error::new(OrtErrorCode::ORT_ENGINE_ERROR, e.to_string())),
+			"Wgpu" => Device::new_wgpu_default()
+				.map(Self)
+				.map_err(|e| Error::new(OrtErrorCode::ORT_ENGINE_ERROR, e.to_string())),
 			device_name => Err(Error::new(OrtErrorCode::ORT_NOT_IMPLEMENTED, format!("ort-candle does not support the '{device_name}' device")))
 		}
 	}
@@ -32,7 +35,7 @@ impl MemoryInfo {
 	pub fn device_type(&self) -> OrtMemoryInfoDeviceType {
 		match &self.0 {
 			Device::Cpu => OrtMemoryInfoDeviceType::OrtMemoryInfoDeviceType_CPU,
-			Device::Cuda(_) | Device::Metal(_) => OrtMemoryInfoDeviceType::OrtMemoryInfoDeviceType_GPU
+			Device::Cuda(_) | Device::Metal(_) | Device::Wgpu(_) => OrtMemoryInfoDeviceType::OrtMemoryInfoDeviceType_GPU
 		}
 	}
 
@@ -45,7 +48,8 @@ impl MemoryInfo {
 		match &self.0 {
 			Device::Cpu => "Cpu\0",
 			Device::Cuda(_) => "Cuda\0",
-			Device::Metal(_) => "Metal\0"
+			Device::Metal(_) => "Metal\0",
+			Device::Wgpu(_) => "Wgpu\0"
 		}
 	}
 
@@ -53,7 +57,8 @@ impl MemoryInfo {
 		match self.0.location() {
 			DeviceLocation::Cpu => 0,
 			DeviceLocation::Cuda { gpu_id } => gpu_id,
-			DeviceLocation::Metal { gpu_id } => gpu_id
+			DeviceLocation::Metal { gpu_id } => gpu_id,
+			DeviceLocation::Wgpu { gpu_id } => gpu_id
 		}
 	}
 
