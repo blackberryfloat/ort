@@ -39,6 +39,9 @@ candle-core = { git = "https://github.com/KimHenrikOtte/candle.git", branch = "w
 candle-onnx = { git = "https://github.com/KimHenrikOtte/candle.git", branch = "wgpu_cleanup" }
 prost = { version = "0.12.1", default-features = false }
 
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.3", features = ["wasm_js"] }
+
 [dev-dependencies]
 ort = { version = "=2.0.0-rc.10", path = "../../", default-features = false, features = [ "alternative-backend", "fetch-models" ] }
 
